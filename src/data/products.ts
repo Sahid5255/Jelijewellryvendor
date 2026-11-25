@@ -33,7 +33,7 @@ const rows: Row[] = [
   { n: 4, name: 'Stainless Steel Necklace and Earrings', price: 3000, category: 'necklaces' },
   { n: 5, name: 'Ankle Chain', price: 2500, category: 'necklaces' },
   { n: 6, name: 'Zirconia Quality Necklace', price: 3500, category: 'necklaces' },
-  { n: 7, name: 'Necklace and Earrings', price: 0, category: 'necklaces' }, // price not given yet
+  { n: 7, name: 'Necklace and Earrings', price: 3500, category: 'necklaces' },
 
   // EARRINGS (photos 8-16)
   { n: 8, name: 'Earrings', price: 1500, category: 'earrings' },
