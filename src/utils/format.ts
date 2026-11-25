@@ -1,7 +1,13 @@
+/** True when a product has a real price. A price of 0 means "price on request". */
+export function hasPrice(amount: number): boolean {
+  return Number.isFinite(amount) && amount > 0;
+}
+
 export function formatPrice(amount: number, currency = 'USD'): string {
   const value = Number.isFinite(amount) ? amount : 0;
   try {
-    return new Intl.NumberFormat(undefined, {
+    // Nigerian formatting gives the ₦ sign (₦7,000); other currencies follow the visitor's browser.
+    return new Intl.NumberFormat(currency === 'NGN' ? 'en-NG' : undefined, {
       style: 'currency',
       currency,
       minimumFractionDigits: Number.isInteger(value) ? 0 : 2,

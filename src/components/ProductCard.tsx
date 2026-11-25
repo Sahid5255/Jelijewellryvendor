@@ -6,6 +6,7 @@ import { useSettings } from '../context/SettingsContext';
 import { useToast } from '../context/ToastContext';
 import { useWishlist } from '../context/WishlistContext';
 import { SHOW_PRICES } from '../data/siteConfig';
+import { hasPrice } from '../utils/format';
 import type { Product } from '../types';
 import SmartImage from './SmartImage';
 
@@ -93,14 +94,17 @@ export default function ProductCard({ product }: { product: Product }) {
             {product.name}
           </Link>
         </h3>
-        {SHOW_PRICES && (
-          <p className="mt-1.5 text-sm">
-            <span className="font-medium">{money(product.price)}</span>
-            {(product.compareAtPrice ?? 0) > product.price && (
-              <span className="ml-2 text-ink/45 line-through">{money(product.compareAtPrice as number)}</span>
-            )}
-          </p>
-        )}
+        {SHOW_PRICES &&
+          (hasPrice(product.price) ? (
+            <p className="mt-1.5 text-sm">
+              <span className="font-medium">{money(product.price)}</span>
+              {(product.compareAtPrice ?? 0) > product.price && (
+                <span className="ml-2 text-ink/45 line-through">{money(product.compareAtPrice as number)}</span>
+              )}
+            </p>
+          ) : (
+            <p className="mt-1.5 text-sm text-ink/60">Price on request</p>
+          ))}
 
         {/* Touch devices have no hover, so the action is always visible on small screens. */}
         <div className="mt-3 md:hidden">

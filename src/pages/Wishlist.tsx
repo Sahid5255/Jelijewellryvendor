@@ -6,6 +6,7 @@ import { useSettings } from '../context/SettingsContext';
 import { useToast } from '../context/ToastContext';
 import { useWishlist } from '../context/WishlistContext';
 import { SHOW_PRICES } from '../data/siteConfig';
+import { hasPrice } from '../utils/format';
 import { usePageMeta } from '../hooks/usePageMeta';
 
 export default function Wishlist() {
@@ -61,7 +62,7 @@ export default function Wishlist() {
                     {p.name}
                   </Link>
                 </h2>
-                {SHOW_PRICES && <p className="mt-1 text-sm font-medium">{money(p.price)}</p>}
+                {SHOW_PRICES && (hasPrice(p.price) ? <p className="mt-1 text-sm font-medium">{money(p.price)}</p> : <p className="mt-1 text-sm text-ink/60">Price on request</p>)}
                 {needsOptions ? (
                   <Link to={`/product/${p.id}`} className="btn-outline mt-3 w-full py-2.5">
                     Choose options

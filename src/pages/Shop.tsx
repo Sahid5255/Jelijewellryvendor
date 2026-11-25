@@ -31,7 +31,7 @@ export default function Shop() {
 
   usePageMeta(
     category ? category.name : q ? `Search: ${q}` : 'Shop Jewellery',
-    category ? `Shop ${category.name.toLowerCase()} at Jeli Jewellery Vendor. ${category.description}` : 'Browse the full Jeli Jewellery Vendor collection: necklaces, earrings, rings, bracelets and jewellery sets.',
+    category ? `Shop ${category.name.toLowerCase()} at Jeli Jewellery Vendor. ${category.description}` : 'Browse the full Jeli Jewellery Vendor collection: necklaces, earrings, rings, bracelets and wristwatches.',
   );
 
   const visible = useMemo(() => {

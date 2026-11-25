@@ -25,10 +25,10 @@ export interface HeroSlide {
 }
 
 export const heroSlides: HeroSlide[] = [
-  { photo: 5, label: 'Necklaces', to: '/category/necklaces' },
-  { photo: 12, label: 'Earrings', to: '/category/earrings' },
-  { photo: 20, label: 'Watches', to: '/shop?q=watch' },
-  { photo: 21, label: 'Bracelets', to: '/category/bracelets' },
+  { photo: 1, label: 'Necklaces', to: '/category/necklaces' },
+  { photo: 10, label: 'Earrings', to: '/category/earrings' },
+  { photo: 20, label: 'Bracelets', to: '/category/bracelets' },
+  { photo: 23, label: 'Wristwatches', to: '/category/watches' },
 ];
 
 /** '' = use the slideshow. Example: '/videos/hero.mp4' */

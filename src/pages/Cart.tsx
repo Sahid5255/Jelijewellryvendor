@@ -6,6 +6,7 @@ import SmartImage from '../components/SmartImage';
 import { useCart } from '../context/CartContext';
 import { useSettings } from '../context/SettingsContext';
 import { SHOW_PRICES } from '../data/siteConfig';
+import { hasPrice } from '../utils/format';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { buildCartMessage, buildWhatsAppUrl, isValidWhatsAppNumber } from '../utils/whatsapp';
 
@@ -64,9 +65,9 @@ export default function Cart() {
                     {item.variant && <p className="mt-1 text-sm text-ink/60">{item.variant}</p>}
                     {soldOut && <p className="mt-1 text-sm text-red-700">No longer available. Please remove it to continue.</p>}
                   </div>
-                  {SHOW_PRICES && <p className="text-sm font-medium">{money(unitPrice * item.quantity)}</p>}
+                  {SHOW_PRICES && hasPrice(unitPrice) && <p className="text-sm font-medium">{money(unitPrice * item.quantity)}</p>}
                 </div>
-                {SHOW_PRICES && <p className="mt-1 text-sm text-ink/60">{money(unitPrice)} each</p>}
+                {SHOW_PRICES && (hasPrice(unitPrice) ? <p className="mt-1 text-sm text-ink/60">{money(unitPrice)} each</p> : <p className="mt-1 text-sm text-ink/60">Price on request</p>)}
                 <div className="mt-auto flex items-center justify-between pt-4">
                   <QuantitySelector size="sm" value={item.quantity} onChange={(n) => setQuantity(item.key, n)} />
                   <button type="button" onClick={() => removeItem(item.key)} className="flex items-center gap-1.5 text-xs uppercase tracking-widest text-ink/60 hover:text-red-700">
@@ -105,6 +106,9 @@ export default function Cart() {
               </div>
             )}
           </dl>
+          {SHOW_PRICES && lines.some((l) => !hasPrice(l.unitPrice)) && (
+            <p className="mt-3 text-xs text-ink/60">Items marked “Price on request” are not included in the total. We will confirm their price on WhatsApp.</p>
+          )}
           <button type="button" className="btn-primary mt-8 w-full gap-2" disabled={hasSoldOut} onClick={orderOnWhatsApp}>
             <MessageCircle size={16} aria-hidden /> Order on WhatsApp
           </button>

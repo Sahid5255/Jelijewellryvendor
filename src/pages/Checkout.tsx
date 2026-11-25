@@ -5,6 +5,7 @@ import SmartImage from '../components/SmartImage';
 import { useCart } from '../context/CartContext';
 import { useSettings } from '../context/SettingsContext';
 import { SHOW_PRICES } from '../data/siteConfig';
+import { hasPrice } from '../utils/format';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { buildOrderMessage, buildWhatsAppUrl, isValidWhatsAppNumber } from '../utils/whatsapp';
 
@@ -172,7 +173,7 @@ export default function Checkout() {
                   {item.variant && <p className="text-ink/60">{item.variant}</p>}
                   <p className="text-ink/60">Qty {item.quantity}</p>
                 </div>
-                {SHOW_PRICES && <p className="text-sm">{money(unitPrice * item.quantity)}</p>}
+                {SHOW_PRICES && (hasPrice(unitPrice) ? <p className="text-sm">{money(unitPrice * item.quantity)}</p> : <p className="text-sm text-ink/60">Price on request</p>)}
               </li>
             ))}
           </ul>
@@ -183,6 +184,9 @@ export default function Checkout() {
             </div>
           ) : (
             <p className="mt-2 border-t border-beige pt-4 text-sm font-medium">Price: confirmed with you on WhatsApp.</p>
+          )}
+          {SHOW_PRICES && lines.some((l) => !hasPrice(l.unitPrice)) && (
+            <p className="mt-2 text-xs text-ink/60">Items marked “Price on request” are not included in the total. We will confirm their price on WhatsApp.</p>
           )}
           <p className="mt-2 text-xs text-ink/60">Delivery fees, if any, are confirmed with you on WhatsApp.</p>
         </aside>

@@ -1,6 +1,6 @@
 import type { CartItem } from '../types';
 import { SHOW_PRICES } from '../data/siteConfig';
-import { formatPrice } from './format';
+import { formatPrice, hasPrice } from './format';
 
 export function normalizePhone(input: string): string {
   return input.replace(/\D/g, '');
@@ -28,6 +28,7 @@ function orderRows(lines: OrderLine[], currency: string): string[] {
   return lines.map(({ item, unitPrice }, i) => {
     const variant = item.variant ? ` (${item.variant})` : '';
     if (!SHOW_PRICES) return `${i + 1}. ${item.name}${variant}\n   Quantity: ${item.quantity}`;
+    if (!hasPrice(unitPrice)) return `${i + 1}. ${item.name}${variant}\n   Quantity: ${item.quantity} (price to be confirmed)`;
     return `${i + 1}. ${item.name}${variant}\n   ${item.quantity} x ${formatPrice(unitPrice, currency)} = ${formatPrice(unitPrice * item.quantity, currency)}`;
   });
 }
@@ -35,7 +36,7 @@ function orderRows(lines: OrderLine[], currency: string): string[] {
 /** Short message used by the "Order on WhatsApp" button in the bag: the items only, details are sent in the chat. */
 export function buildCartMessage(storeName: string, lines: OrderLine[], total: number, currency: string): string {
   const parts = [`Hello ${storeName}, I would like to order:`, '', ...orderRows(lines, currency), ''];
-  if (SHOW_PRICES) parts.push(`*Total: ${formatPrice(total, currency)}*`, '(Excludes delivery fees, if any.)', '');
+  if (SHOW_PRICES) parts.push(`*Total: ${formatPrice(total, currency)}*`, '(Excludes delivery fees and any item with a price to be confirmed.)', '');
   parts.push('I will send my name and delivery address here. Please confirm availability, price, delivery cost and payment details. Thank you!');
   return parts.join('\n');
 }
@@ -47,11 +48,7 @@ export function buildOrderMessage(
   total: number,
   currency: string,
 ): string {
-  const rows = lines.map(({ item, unitPrice }, i) => {
-    const variant = item.variant ? ` (${item.variant})` : '';
-    if (!SHOW_PRICES) return `${i + 1}. ${item.name}${variant}\n   Quantity: ${item.quantity}`;
-    return `${i + 1}. ${item.name}${variant}\n   ${item.quantity} x ${formatPrice(unitPrice, currency)} = ${formatPrice(unitPrice * item.quantity, currency)}`;
-  });
+  const rows = orderRows(lines, currency);
   const parts = [
     `Hello ${storeName}, I would like to place an order request.`,
     '',
@@ -64,7 +61,7 @@ export function buildOrderMessage(
     ...rows,
     '',
     ...(SHOW_PRICES
-      ? [`*Total: ${formatPrice(total, currency)}*`, '(Excludes delivery fees, if any.)']
+      ? [`*Total: ${formatPrice(total, currency)}*`, '(Excludes delivery fees and any item with a price to be confirmed.)']
       : ['Please send me the price for these items.']),
   ];
   if (customer.notes && customer.notes.trim()) {

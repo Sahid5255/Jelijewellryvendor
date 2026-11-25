@@ -12,7 +12,7 @@ import { bannerPhotos, img } from '../data/productImages';
 
 export default function Home() {
   const { products, categories } = useCatalog();
-  usePageMeta(null, 'Jeli Jewellery Vendor — modern luxury necklaces, earrings, rings, bracelets and jewellery sets. Elegance in every detail.');
+  usePageMeta(null, 'Jeli Jewellery Vendor — modern luxury necklaces, earrings, rings, bracelets and wristwatches. Elegance in every detail.');
 
   const featured = products.filter((p) => p.isFeatured).slice(0, 8);
 

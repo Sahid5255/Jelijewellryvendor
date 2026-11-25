@@ -11,6 +11,7 @@ import { useSettings } from '../context/SettingsContext';
 import { useToast } from '../context/ToastContext';
 import { useWishlist } from '../context/WishlistContext';
 import { SHOW_PRICES } from '../data/siteConfig';
+import { hasPrice } from '../utils/format';
 import { usePageMeta } from '../hooks/usePageMeta';
 import { relatedProducts } from '../utils/catalog';
 import NotFound from './NotFound';
@@ -108,7 +109,7 @@ export default function ProductDetails() {
         <div className="lg:py-4">
           <p className="eyebrow">{category?.name ?? product.category}</p>
           <h1 className="mt-3 text-4xl leading-tight sm:text-5xl">{product.name}</h1>
-          {SHOW_PRICES ? (
+          {SHOW_PRICES && hasPrice(product.price) ? (
             <p className="mt-5 text-2xl">
               <span className="font-medium">{money(product.price)}</span>
               {(product.compareAtPrice ?? 0) > product.price && (

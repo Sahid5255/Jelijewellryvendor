@@ -18,7 +18,7 @@ export const defaultSettings: StoreSettings = {
   instagram: 'https://www.instagram.com/jeli_jewelery_vendor',
   facebook: '', // add your Facebook page link here when you have one; it is hidden while empty
   tiktok: 'https://www.tiktok.com/@jelijewelery',
-  currency: String(env.VITE_CURRENCY || 'USD').toUpperCase(),
+  currency: String(env.VITE_CURRENCY || 'NGN').toUpperCase(),
   announcement: 'Discover Timeless Elegance with Jeli Jewellery Vendor.',
 };
 
@@ -30,7 +30,7 @@ export const TAGLINE = 'Elegance in Every Detail.';
  *         and you confirm the price with them.
  * true  = prices, sale prices, totals and the price sort are shown again.
  */
-export const SHOW_PRICES: boolean = false;
+export const SHOW_PRICES: boolean = true;
 
 /** Opens the store address in Google Maps (works on phones and computers). */
 export const mapUrl = (address: string): string =>

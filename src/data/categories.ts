@@ -1,10 +1,11 @@
 import type { Category } from '../types';
+import { categoryPhotos, img } from './productImages';
 
 /**
  * Built-in categories. These always exist, even if Supabase is unavailable.
  * Extra categories added by the admin live in Supabase and are merged in at runtime.
  */
-export const initialCategories: Category[] = [
+const baseCategories: Category[] = [
   {
     slug: 'necklaces',
     name: 'Necklaces',
@@ -24,7 +25,7 @@ export const initialCategories: Category[] = [
   {
     slug: 'rings',
     name: 'Rings',
-    description: 'Solitaires, pearls and stacking bands made to be worn daily.',
+    description: 'Rings and arm rings made to be worn daily.',
     image: '/images/categories/rings.svg',
     source: 'local',
     sortOrder: 3,
@@ -38,11 +39,16 @@ export const initialCategories: Category[] = [
     sortOrder: 4,
   },
   {
-    slug: 'jewellery-sets',
-    name: 'Jewellery Sets',
-    description: 'Coordinated pieces, thoughtfully paired for occasions and gifting.',
-    image: '/images/categories/sets.svg',
+    slug: 'watches',
+    name: 'Wristwatches',
+    description: 'Stylish wristwatches for everyday wear and gifting.',
+    image: '/images/categories/bracelets.svg',
     source: 'local',
     sortOrder: 5,
   },
 ];
+
+export const initialCategories: Category[] = baseCategories.map((c) => {
+  const n = categoryPhotos[c.slug];
+  return n ? { ...c, image: img(n) } : c;
+});

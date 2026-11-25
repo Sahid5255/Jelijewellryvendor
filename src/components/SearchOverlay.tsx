@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCatalog } from '../context/CatalogContext';
 import { useSettings } from '../context/SettingsContext';
 import { SHOW_PRICES } from '../data/siteConfig';
+import { hasPrice } from '../utils/format';
 import { searchProducts } from '../utils/catalog';
 import SmartImage from './SmartImage';
 
@@ -80,7 +81,7 @@ export default function SearchOverlay({ open, onClose }: { open: boolean; onClos
                 <Link to={`/product/${p.id}`} onClick={onClose} className="flex items-center gap-4 py-3 hover:bg-cream">
                   <SmartImage src={p.image} alt="" className="h-16 w-14 object-cover" />
                   <span className="flex-1 font-serif text-lg">{p.name}</span>
-                  {SHOW_PRICES && <span className="text-sm">{money(p.price)}</span>}
+                  {SHOW_PRICES && hasPrice(p.price) && <span className="text-sm">{money(p.price)}</span>}
                 </Link>
               </li>
             ))}

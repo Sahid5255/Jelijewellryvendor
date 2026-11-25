@@ -1,628 +1,114 @@
-import type { LocalProductInput, ProductSpec, ProductVariation } from '../types';
+import type { LocalProductInput, ProductSpec } from '../types';
 
 /**
- * INITIAL REACT PRODUCT CATALOGUE
- * --------------------------------
- * These products ship with the website and never depend on Supabase.
- * Images live in /public/images/products/ and are named img1.jpeg, img2.jpeg ...
- * To change a photo, change the number in the image path of that product.
+ * PRODUCT CATALOGUE (your real products)
+ * ---------------------------------------
+ * One line per product, in the order of your photos in public/images/products/ (img1.jpeg ... img26.jpeg).
  *
- * IMPORTANT: product details below (materials, sizes, prices) are SAMPLE
- * content. Replace them with the real details of your pieces before launch.
+ *   n         = the photo number (img7.jpeg -> 7)
+ *   name      = the product name shown on the website
+ *   price     = the price in Naira (just the number, no commas). Use 0 when the price is not decided:
+ *               the website then shows "Price on request" and the customer asks on WhatsApp.
+ *   category  = necklaces | earrings | rings | bracelets | watches
  *
- * Rules:
- *  - `id` must be unique and must never change once customers have used it.
- *  - `category` must be a slug from src/data/categories.ts.
- *  - This file is never modified by the admin dashboard.
+ * To change a name or a price, edit it below and save. To add a product, add a new line at the end
+ * (use the next free photo number) and put the photo in public/images/products/.
+ *
+ * Rules: this file is never modified by the admin dashboard. Products you add in /admin
+ * (Supabase) are shown together with these.
  */
 
-const ringSize: ProductVariation = { label: 'Ring size (US)', options: ['5', '6', '7', '8', '9'] };
-void ringSize; // kept for when ring products are added
-const necklaceLength: ProductVariation = { label: 'Length', options: ['16 in', '18 in', '20 in'] };
-const braceletSize: ProductVariation = { label: 'Size', options: ['Small', 'Medium', 'Large'] };
+interface Row {
+  n: number;
+  name: string;
+  price: number;
+  category: 'necklaces' | 'earrings' | 'rings' | 'bracelets' | 'watches';
+}
 
-const goldSpecs = (extra: ProductSpec[] = []): ProductSpec[] => [
-  { label: 'Metal', value: 'Gold-tone plated' },
-  ...extra,
-  { label: 'Care', value: 'Keep dry; store in the pouch provided' },
+const rows: Row[] = [
+  // NECKLACES (photos 1-7)
+  { n: 1, name: 'Titanium Steel Necklace and Bracelet', price: 7000, category: 'necklaces' },
+  { n: 2, name: 'Titanium Steel Necklace and Bracelet', price: 7000, category: 'necklaces' },
+  { n: 3, name: 'Layered Necklace', price: 4000, category: 'necklaces' },
+  { n: 4, name: 'Stainless Steel Necklace and Earrings', price: 3000, category: 'necklaces' },
+  { n: 5, name: 'Ankle Chain', price: 2500, category: 'necklaces' },
+  { n: 6, name: 'Zirconia Quality Necklace', price: 3500, category: 'necklaces' },
+  { n: 7, name: 'Necklace and Earrings', price: 0, category: 'necklaces' }, // price not given yet
+
+  // EARRINGS (photos 8-16)
+  { n: 8, name: 'Earrings', price: 1500, category: 'earrings' },
+  { n: 9, name: 'Stainless Steel Earrings', price: 2000, category: 'earrings' },
+  { n: 10, name: 'Quality Earrings', price: 4500, category: 'earrings' },
+  { n: 11, name: 'Earrings', price: 3500, category: 'earrings' },
+  { n: 12, name: 'Earrings', price: 4000, category: 'earrings' },
+  { n: 13, name: 'Earrings', price: 4000, category: 'earrings' },
+  { n: 14, name: 'Earrings', price: 1500, category: 'earrings' },
+  { n: 15, name: 'Earrings', price: 4000, category: 'earrings' },
+  { n: 16, name: 'Earrings', price: 4000, category: 'earrings' },
+
+  // RINGS (photos 17-18)
+  { n: 17, name: 'Rings', price: 2500, category: 'rings' },
+  { n: 18, name: 'Arm Ring', price: 2500, category: 'rings' },
+
+  // BRACELETS (photos 19-22)
+  { n: 19, name: 'Bracelet', price: 5500, category: 'bracelets' },
+  { n: 20, name: 'Quality Ball Bracelet All in 1', price: 7000, category: 'bracelets' },
+  { n: 21, name: 'Bracelet', price: 2500, category: 'bracelets' },
+  { n: 22, name: 'Floral Bracelets', price: 2500, category: 'bracelets' },
+
+  // WRISTWATCHES (photos 23-26)
+  { n: 23, name: 'Wristwatch', price: 12000, category: 'watches' },
+  { n: 24, name: 'Wristwatch', price: 12000, category: 'watches' },
+  { n: 25, name: 'Wristwatch', price: 10000, category: 'watches' },
+  { n: 26, name: 'Wristwatch', price: 10000, category: 'watches' },
 ];
 
-export const initialProducts: LocalProductInput[] = [
-  // ------------------------------------------------------------ NECKLACES (photos 1-11)
-  {
-    id: 'vl-n-001',
-    name: 'Aurelia Pendant Necklace',
-    description:
-      'A luminous round pendant suspended from a fine chain. Understated enough for every day, polished enough for evening.',
-    price: 148,
-    category: 'necklaces',
-    image: '/images/products/img1.jpeg',
-    additionalImages: [],
-    keywords: ['pendant', 'gold', 'chain', 'everyday', 'gift'],
-    specs: goldSpecs([{ label: 'Stone', value: 'Crystal centre' }, { label: 'Pendant', value: '1.2 cm' }]),
-    variations: [necklaceLength],
-    isFeatured: true,
-    isNewArrival: true,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-10-20T09:00:00Z',
-  },
-  {
-    id: 'vl-n-002',
-    name: 'Celeste Pearl Necklace',
-    description:
-      'A single lustrous pearl on a delicate chain — a timeless piece that goes with everything from denim to eveningwear.',
-    price: 189,
-    compareAtPrice: 229,
-    category: 'necklaces',
-    image: '/images/products/img2.jpeg',
-    additionalImages: [],
-    keywords: ['pearl', 'classic', 'bridal', 'minimal'],
-    specs: goldSpecs([{ label: 'Pearl', value: 'Freshwater-style pearl, 10 mm' }]),
-    variations: [necklaceLength],
-    isFeatured: true,
-    isNewArrival: false,
-    isOnSale: true,
-    isAvailable: true,
-    createdAt: '2026-08-12T09:00:00Z',
-  },
-  {
-    id: 'vl-n-003',
-    name: 'Soleil Drop Necklace',
-    description:
-      'A sculpted teardrop pendant that catches the light with every movement. Effortless layering for the modern wardrobe.',
-    price: 126,
-    category: 'necklaces',
-    image: '/images/products/img3.jpeg',
-    additionalImages: [],
-    keywords: ['teardrop', 'layering', 'gold', 'delicate'],
-    specs: goldSpecs([{ label: 'Pendant', value: 'Teardrop, 2 cm' }]),
-    variations: [necklaceLength],
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-06-02T09:00:00Z',
-  },
-  {
-    id: 'vl-n-004',
-    name: 'Aria Layered Necklace',
-    description:
-      'A delicate two-strand layered chain that sits beautifully at the collarbone.',
-    price: 132,
-    category: 'necklaces',
-    image: '/images/products/img4.jpeg',
-    additionalImages: [],
-    keywords: ['layered', 'chain', 'gold', 'everyday'],
-    specs: goldSpecs(),
-    variations: [necklaceLength],
-    isFeatured: false,
-    isNewArrival: true,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-10-18T09:00:00Z',
-  },
-  {
-    id: 'vl-n-005',
-    name: 'Calla Crystal Necklace',
-    description:
-      'A single faceted crystal that catches the light with every movement.',
-    price: 158,
-    category: 'necklaces',
-    image: '/images/products/img5.jpeg',
-    additionalImages: [],
-    keywords: ['crystal', 'pendant', 'evening'],
-    specs: goldSpecs(),
-    variations: [necklaceLength],
-    isFeatured: true,
-    isNewArrival: true,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-10-16T09:00:00Z',
-  },
-  {
-    id: 'vl-n-006',
-    name: 'Dahlia Heart Necklace',
-    description:
-      'A softly polished heart pendant on a fine chain, made for gifting.',
-    price: 126,
-    category: 'necklaces',
-    image: '/images/products/img6.jpeg',
-    additionalImages: [],
-    keywords: ['heart', 'gift', 'romantic'],
-    specs: goldSpecs(),
-    variations: [necklaceLength],
-    isFeatured: false,
-    isNewArrival: true,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-10-14T09:00:00Z',
-  },
-  {
-    id: 'vl-n-007',
-    name: 'Elara Pearl Strand',
-    description:
-      'A graceful strand of lustrous pearls with a champagne-gold clasp.',
-    price: 215,
-    category: 'necklaces',
-    image: '/images/products/img7.jpeg',
-    additionalImages: [],
-    keywords: ['pearl', 'strand', 'classic', 'bridal'],
-    specs: goldSpecs(),
-    variations: [necklaceLength],
-    isFeatured: true,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-10-12T09:00:00Z',
-  },
-  {
-    id: 'vl-n-008',
-    name: 'Freya Bar Necklace',
-    description:
-      'A minimalist gold bar pendant, clean and modern.',
-    price: 118,
-    category: 'necklaces',
-    image: '/images/products/img8.jpeg',
-    additionalImages: [],
-    keywords: ['bar', 'minimal', 'modern', 'gold'],
-    specs: goldSpecs(),
-    variations: [necklaceLength],
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-10-10T09:00:00Z',
-  },
-  {
-    id: 'vl-n-009',
-    name: 'Giselle Statement Necklace',
-    description:
-      'A bold, sculpted collar necklace for evenings that deserve a statement.',
-    price: 245,
-    category: 'necklaces',
-    image: '/images/products/img9.jpeg',
-    additionalImages: [],
-    keywords: ['statement', 'collar', 'evening'],
-    specs: goldSpecs(),
-    variations: [necklaceLength],
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-10-08T09:00:00Z',
-  },
-  {
-    id: 'vl-n-010',
-    name: 'Helena Initial Necklace',
-    description:
-      'A dainty pendant that can be paired with a personal touch.',
-    price: 139,
-    category: 'necklaces',
-    image: '/images/products/img10.jpeg',
-    additionalImages: [],
-    keywords: ['initial', 'pendant', 'personal', 'gift'],
-    specs: goldSpecs(),
-    variations: [necklaceLength],
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-10-06T09:00:00Z',
-  },
-  {
-    id: 'vl-n-011',
-    name: 'Ione Choker Necklace',
-    description:
-      'A sleek, close-fitting choker with a polished finish. Sits elegantly at the neckline, day or night.',
-    price: 142,
-    category: 'necklaces',
-    image: '/images/products/img11.jpeg',
-    additionalImages: [],
-    keywords: ['choker', 'modern', 'gold', 'evening'],
-    specs: goldSpecs(),
-    variations: [necklaceLength],
-    isFeatured: false,
-    isNewArrival: true,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-10-04T09:00:00Z',
-  },
+/** Photos shown in "Featured Pieces" on the homepage. */
+const featured = new Set([1, 3, 6, 10, 17, 19, 20, 23]);
+/** Photos marked "New". */
+const newArrivals = new Set([2, 4, 9, 11, 22, 24]);
 
-  // ------------------------------------------------------------- EARRINGS (photos 12-19)
-  {
-    id: 'vl-e-001',
-    name: 'Lumière Drop Earrings',
-    description:
-      'Elegant teardrop earrings with a glimmering centre. Light on the ear, striking in photographs.',
-    price: 98,
-    category: 'earrings',
-    image: '/images/products/img12.jpeg',
-    additionalImages: [],
-    keywords: ['drop', 'teardrop', 'evening', 'gold', 'wedding'],
-    specs: goldSpecs([{ label: 'Drop length', value: '3.5 cm' }, { label: 'Fastening', value: 'Hypoallergenic hook' }]),
-    isFeatured: true,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-07-01T09:00:00Z',
-  },
-  {
-    id: 'vl-e-002',
-    name: 'Seraphina Hoop Earrings',
-    description:
-      'Slim, sculpted hoops with a soft high shine. The everyday earring you will reach for again and again.',
-    price: 84,
-    category: 'earrings',
-    image: '/images/products/img13.jpeg',
-    additionalImages: [],
-    keywords: ['hoops', 'everyday', 'classic', 'gold'],
-    specs: goldSpecs([{ label: 'Diameter', value: '3 cm' }]),
-    isFeatured: false,
-    isNewArrival: true,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-10-28T09:00:00Z',
-  },
-  {
-    id: 'vl-e-003',
-    name: 'Perle Stud Earrings',
-    description:
-      'Classic pearl studs with a soft, creamy lustre. A gift that is always the right choice.',
-    price: 72,
-    compareAtPrice: 90,
-    category: 'earrings',
-    image: '/images/products/img14.jpeg',
-    additionalImages: [],
-    keywords: ['pearl', 'stud', 'gift', 'classic', 'bridal'],
-    specs: goldSpecs([{ label: 'Pearl', value: '8 mm' }, { label: 'Fastening', value: 'Butterfly back' }]),
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: true,
-    isAvailable: true,
-    createdAt: '2026-05-15T09:00:00Z',
-  },
-  {
-    id: 'vl-e-004',
-    name: 'Aurelle Hoop Earrings',
-    description:
-      'Polished mid-size hoops with a soft, high shine. Light, comfortable and easy to wear all day.',
-    price: 88,
-    category: 'earrings',
-    image: '/images/products/img15.jpeg',
-    additionalImages: [],
-    keywords: ['hoops', 'gold', 'everyday'],
-    specs: goldSpecs(),
-    isFeatured: false,
-    isNewArrival: true,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-10-26T09:00:00Z',
-  },
-  {
-    id: 'vl-e-005',
-    name: 'Brielle Crystal Stud Earrings',
-    description:
-      'Sparkling crystal studs that bring a touch of brilliance to every look.',
-    price: 64,
-    category: 'earrings',
-    image: '/images/products/img16.jpeg',
-    additionalImages: [],
-    keywords: ['stud', 'crystal', 'gift', 'minimal'],
-    specs: goldSpecs(),
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-09-20T09:00:00Z',
-  },
-  {
-    id: 'vl-e-006',
-    name: 'Camille Pearl Drop Earrings',
-    description:
-      'A single pearl suspended from a fine gold-tone link. Graceful movement, timeless appeal.',
-    price: 104,
-    category: 'earrings',
-    image: '/images/products/img17.jpeg',
-    additionalImages: [],
-    keywords: ['pearl', 'drop', 'bridal', 'classic'],
-    specs: goldSpecs(),
-    isFeatured: true,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-09-02T09:00:00Z',
-  },
-  {
-    id: 'vl-e-007',
-    name: 'Delphine Huggie Earrings',
-    description:
-      'Small, sculpted huggies that hug the lobe closely. Perfect for stacking or wearing solo.',
-    price: 76,
-    category: 'earrings',
-    image: '/images/products/img18.jpeg',
-    additionalImages: [],
-    keywords: ['huggie', 'small', 'minimal', 'gold'],
-    specs: goldSpecs(),
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-08-10T09:00:00Z',
-  },
-  {
-    id: 'vl-e-008',
-    name: 'Esme Chandelier Earrings',
-    description:
-      'Cascading detail for evenings that deserve a little drama, yet still light to wear.',
-    price: 118,
-    compareAtPrice: 140,
-    category: 'earrings',
-    image: '/images/products/img19.jpeg',
-    additionalImages: [],
-    keywords: ['chandelier', 'statement', 'evening', 'wedding'],
-    specs: goldSpecs(),
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: true,
-    isAvailable: true,
-    createdAt: '2026-07-14T09:00:00Z',
-  },
+const descriptions: Record<Row['category'], string> = {
+  necklaces: 'A polished piece for everyday wear, gifting and special days.',
+  earrings: 'Light, comfortable earrings that finish any look beautifully.',
+  rings: 'A neat ring made to be worn daily or for special occasions.',
+  bracelets: 'A bracelet that sits comfortably and adds a quiet sparkle to your wrist.',
+  watches: 'A stylish wristwatch that is as pretty as it is practical.',
+};
 
-  // ------------------------------------------------------------ BRACELETS & WATCH (photos 20-33)
-  {
-    id: 'vl-w-001',
-    name: 'Aurelia Classic Wristwatch',
-    description:
-      'A refined wristwatch with a slim gold-tone case, made to be noticed quietly.',
-    price: 210,
-    category: 'bracelets',
-    image: '/images/products/img20.jpeg',
-    additionalImages: [],
-    keywords: ['watch', 'wristwatch', 'classic', 'gold', 'gift'],
-    specs: goldSpecs([{ label: 'Movement', value: 'Quartz' }, { label: 'Case', value: '30 mm' }]),
-    isFeatured: true,
-    isNewArrival: true,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-11-01T09:00:00Z',
-  },
-  {
-    id: 'vl-b-001',
-    name: 'Isabelle Pearl Bracelet',
-    description:
-      'A graceful strand of lustrous pearls — soft against the skin and beautiful on its own or layered.',
-    price: 118,
-    category: 'bracelets',
-    image: '/images/products/img21.jpeg',
-    additionalImages: [],
-    keywords: ['pearl', 'strand', 'beaded', 'bridal', 'classic'],
-    specs: goldSpecs([{ label: 'Pearls', value: '6 mm' }]),
-    variations: [braceletSize],
-    isFeatured: true,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-07-22T09:00:00Z',
-  },
-  {
-    id: 'vl-b-002',
-    name: 'Vesper Chain Bracelet',
-    description:
-      'Fine linked chain with a gleaming finish. Light as air, with an adjustable clasp for a perfect fit.',
-    price: 92,
-    category: 'bracelets',
-    image: '/images/products/img22.jpeg',
-    additionalImages: [],
-    keywords: ['chain', 'delicate', 'layering', 'gold', 'minimal'],
-    specs: goldSpecs([{ label: 'Clasp', value: 'Lobster clasp with extender' }]),
-    variations: [braceletSize],
-    isFeatured: false,
-    isNewArrival: true,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-11-02T09:00:00Z',
-  },
-  {
-    id: 'vl-b-003',
-    name: 'Cléo Sculpted Bangle',
-    description:
-      'A bold, polished bangle with a single faceted accent. A statement of quiet confidence.',
-    price: 134,
-    compareAtPrice: 165,
-    category: 'bracelets',
-    image: '/images/products/img23.jpeg',
-    additionalImages: [],
-    keywords: ['bangle', 'statement', 'gold', 'polished'],
-    specs: goldSpecs([{ label: 'Inner diameter', value: '6 cm' }]),
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: true,
-    isAvailable: true,
-    createdAt: '2026-05-30T09:00:00Z',
-  },
-  {
-    id: 'vl-b-004',
-    name: 'Adele Tennis Bracelet',
-    description:
-      'A continuous line of sparkling stones that catches the light on every movement.',
-    price: 156,
-    category: 'bracelets',
-    image: '/images/products/img24.jpeg',
-    additionalImages: [],
-    keywords: ['tennis', 'crystal', 'evening', 'gift'],
-    specs: goldSpecs(),
-    variations: [braceletSize],
-    isFeatured: true,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-01-10T09:00:00Z',
-  },
-  {
-    id: 'vl-b-005',
-    name: 'Blythe Charm Bracelet',
-    description:
-      'A delicate chain with tiny charms, made to be personal and playful.',
-    price: 98,
-    category: 'bracelets',
-    image: '/images/products/img25.jpeg',
-    additionalImages: [],
-    keywords: ['charm', 'chain', 'gift', 'delicate'],
-    specs: goldSpecs(),
-    variations: [braceletSize],
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-02-11T09:00:00Z',
-  },
-  {
-    id: 'vl-b-006',
-    name: 'Cosima Cuff Bracelet',
-    description:
-      'An open sculpted cuff with a clean, modern silhouette that slips on easily.',
-    price: 112,
-    category: 'bracelets',
-    image: '/images/products/img26.jpeg',
-    additionalImages: [],
-    keywords: ['cuff', 'modern', 'statement', 'gold'],
-    specs: goldSpecs(),
-    variations: [braceletSize],
-    isFeatured: false,
-    isNewArrival: true,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-03-12T09:00:00Z',
-  },
-  {
-    id: 'vl-b-007',
-    name: 'Dione Beaded Bracelet',
-    description:
-      'Fine beads strung with care for a soft, textured look that layers well.',
-    price: 84,
-    category: 'bracelets',
-    image: '/images/products/img27.jpeg',
-    additionalImages: [],
-    keywords: ['beaded', 'layering', 'delicate'],
-    specs: goldSpecs(),
-    variations: [braceletSize],
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-04-13T09:00:00Z',
-  },
-  {
-    id: 'vl-b-008',
-    name: 'Emilia Link Bracelet',
-    description:
-      'Classic polished links with a secure clasp. A timeless everyday piece.',
-    price: 108,
-    compareAtPrice: 133,
-    category: 'bracelets',
-    image: '/images/products/img28.jpeg',
-    additionalImages: [],
-    keywords: ['link', 'chain', 'classic', 'everyday'],
-    specs: goldSpecs(),
-    variations: [braceletSize],
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: true,
-    isAvailable: true,
-    createdAt: '2026-05-14T09:00:00Z',
-  },
-  {
-    id: 'vl-b-009',
-    name: 'Fleur Twist Bangle',
-    description:
-      'A softly twisted bangle with a graceful, flowing finish.',
-    price: 122,
-    category: 'bracelets',
-    image: '/images/products/img29.jpeg',
-    additionalImages: [],
-    keywords: ['bangle', 'twist', 'gold', 'classic'],
-    specs: goldSpecs(),
-    variations: [braceletSize],
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-06-15T09:00:00Z',
-  },
-  {
-    id: 'vl-b-010',
-    name: 'Gaia Slider Bracelet',
-    description:
-      'An adjustable slider bracelet that fits almost any wrist size.',
-    price: 92,
-    category: 'bracelets',
-    image: '/images/products/img30.jpeg',
-    additionalImages: [],
-    keywords: ['adjustable', 'minimal', 'delicate', 'gift'],
-    specs: goldSpecs(),
-    variations: [braceletSize],
-    isFeatured: false,
-    isNewArrival: true,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-07-16T09:00:00Z',
-  },
-  {
-    id: 'vl-b-011',
-    name: 'Hestia Wrap Bracelet',
-    description:
-      'A double-wrap chain bracelet that looks like two pieces in one.',
-    price: 114,
-    category: 'bracelets',
-    image: '/images/products/img31.jpeg',
-    additionalImages: [],
-    keywords: ['wrap', 'layered', 'chain'],
-    specs: goldSpecs(),
-    variations: [braceletSize],
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-08-17T09:00:00Z',
-  },
-  {
-    id: 'vl-b-012',
-    name: 'Imogen Pearl Cuff',
-    description:
-      'A refined cuff set with pearls, elegant for weddings and special occasions.',
-    price: 146,
-    category: 'bracelets',
-    image: '/images/products/img32.jpeg',
-    additionalImages: [],
-    keywords: ['pearl', 'cuff', 'bridal', 'statement'],
-    specs: goldSpecs(),
-    variations: [braceletSize],
-    isFeatured: true,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-01-18T09:00:00Z',
-  },
-  {
-    id: 'vl-b-013',
-    name: 'Juno Herringbone Bracelet',
-    description:
-      'A smooth herringbone chain with a mirror-like shine.',
-    price: 102,
-    category: 'bracelets',
-    image: '/images/products/img33.jpeg',
-    additionalImages: [],
-    keywords: ['herringbone', 'chain', 'gold', 'minimal'],
-    specs: goldSpecs(),
-    variations: [braceletSize],
-    isFeatured: false,
-    isNewArrival: false,
-    isOnSale: false,
-    isAvailable: true,
-    createdAt: '2026-02-10T09:00:00Z',
-  },
+const keywordsFor: Record<Row['category'], string[]> = {
+  necklaces: ['necklace', 'chain', 'gift'],
+  earrings: ['earrings', 'ear', 'gift'],
+  rings: ['ring', 'rings', 'gift'],
+  bracelets: ['bracelet', 'bangle', 'gift'],
+  watches: ['watch', 'wristwatch', 'time', 'gift'],
+};
 
-  // RINGS and JEWELLERY SETS: no photos yet, so no products. Add them here later
-  // (category: 'rings' or 'jewellery-sets') and give each an image like '/images/products/img35.jpeg'.
-];
+function specsFor(name: string): ProductSpec[] {
+  const specs: ProductSpec[] = [];
+  if (/titanium/i.test(name)) specs.push({ label: 'Material', value: 'Titanium steel' });
+  else if (/stainless/i.test(name)) specs.push({ label: 'Material', value: 'Stainless steel' });
+  if (/zirconia/i.test(name)) specs.push({ label: 'Stones', value: 'Zirconia' });
+  specs.push({ label: 'Care', value: 'Keep dry; store in a pouch when not worn' });
+  return specs;
+}
+
+const pad = (n: number) => String(n).padStart(3, '0');
+
+export const initialProducts: LocalProductInput[] = rows.map((r) => ({
+  id: `jv-${pad(r.n)}`,
+  name: r.name,
+  description: `${r.name}. ${descriptions[r.category]} Message us on WhatsApp to confirm availability and delivery.`,
+  price: r.price,
+  category: r.category,
+  image: `/images/products/img${r.n}.jpeg`,
+  additionalImages: [],
+  keywords: [...keywordsFor[r.category], ...r.name.toLowerCase().split(/\s+/)],
+  specs: specsFor(r.name),
+  isFeatured: featured.has(r.n),
+  isNewArrival: newArrivals.has(r.n),
+  isOnSale: false,
+  isAvailable: true,
+  // Photo 1 is the newest, so the "Newest" sort shows your first photos first.
+  createdAt: new Date(Date.UTC(2026, 10, 24 - r.n, 9, 0, 0)).toISOString(),
+}));
